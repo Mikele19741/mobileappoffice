@@ -37,7 +37,7 @@ namespace Tamagochi
             if (id == Resource.Id.action_settings)
             {
                 SetContentView(Resource.Layout.action_settings);
-                Intent intent = new Intent(this, typeof(Settings));
+                Intent intent = new Intent(this, typeof(SettingsActivity));
                 StartActivity(intent);
                 return true;
             }

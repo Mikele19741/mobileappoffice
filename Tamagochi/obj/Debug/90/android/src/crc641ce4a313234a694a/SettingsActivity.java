@@ -1,7 +1,7 @@
 package crc641ce4a313234a694a;
 
 
-public class Settings
+public class SettingsActivity
 	extends android.support.v7.app.AppCompatActivity
 	implements
 		mono.android.IGCUserPeer
@@ -13,15 +13,15 @@ public class Settings
 			"n_onCreate:(Landroid/os/Bundle;)V:GetOnCreate_Landroid_os_Bundle_Handler\n" +
 			"n_onCreateOptionsMenu:(Landroid/view/Menu;)Z:GetOnCreateOptionsMenu_Landroid_view_Menu_Handler\n" +
 			"";
-		mono.android.Runtime.register ("Tamagochi.Settings, Tamagochi", Settings.class, __md_methods);
+		mono.android.Runtime.register ("Tamagochi.SettingsActivity, Tamagochi", SettingsActivity.class, __md_methods);
 	}
 
 
-	public Settings ()
+	public SettingsActivity ()
 	{
 		super ();
-		if (getClass () == Settings.class)
-			mono.android.TypeManager.Activate ("Tamagochi.Settings, Tamagochi", "", this, new java.lang.Object[] {  });
+		if (getClass () == SettingsActivity.class)
+			mono.android.TypeManager.Activate ("Tamagochi.SettingsActivity, Tamagochi", "", this, new java.lang.Object[] {  });
 	}
 
 

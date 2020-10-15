@@ -14,8 +14,9 @@ using Android.Widget;
 namespace Tamagochi
 {
     [Activity(Label = "Settings", Theme = "@style/AppTheme.NoActionBar")]
-    public class Settings : AppCompatActivity
+    public class SettingsActivity : AppCompatActivity
     {
+        TamagochiViewModel tVm = new TamagochiViewModel();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -25,13 +26,18 @@ namespace Tamagochi
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             Button save= FindViewById<Button>(Resource.Id.buttonSave);
-            //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
             save.Click += saveSettingsOnClick;
         }
 
-        private void saveSettingsOnClick(object sender, EventArgs e)
+        private  async void saveSettingsOnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var sMobilePhone = FindViewById<EditText>(Resource.Id.editMobilePhone);
+            var isAutmoanticSend = FindViewById<CheckBox>(Resource.Id.checkBoxAutomaticSend);
+            var settings = new Settings();
+            settings.IsAutomaticSet = isAutmoanticSend.Checked;
+            settings.SecurtiyMobilePhone = sMobilePhone.Text;
+            await tVm.AppentSettingsAsync(settings);
+
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

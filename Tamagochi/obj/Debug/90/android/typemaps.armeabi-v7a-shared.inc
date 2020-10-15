@@ -26882,8 +26882,8 @@
 	.section	.rodata.java_type_name.4480,"aMS",%progbits,1
 	.type	.L.java_type_name.4480, %object
 .L.java_type_name.4480:
-	.asciz	"crc641ce4a313234a694a/Settings"
-	.size	.L.java_type_name.4480, 31
+	.asciz	"crc641ce4a313234a694a/SettingsActivity"
+	.size	.L.java_type_name.4480, 39
 
 	.section	.rodata.java_type_name.4481,"aMS",%progbits,1
 	.type	.L.java_type_name.4481, %object
@@ -75716,8 +75716,8 @@
 	.section	.rodata.managed_type_name.6873,"aMS",%progbits,1
 	.type	.L.managed_type_name.6873, %object
 .L.managed_type_name.6873:
-	.asciz	"Tamagochi.Settings, Tamagochi"
-	.size	.L.managed_type_name.6873, 30
+	.asciz	"Tamagochi.SettingsActivity, Tamagochi"
+	.size	.L.managed_type_name.6873, 38
 	.section	.rodata.managed_type_name.6874,"aMS",%progbits,1
 	.type	.L.managed_type_name.6874, %object
 .L.managed_type_name.6874:

@@ -26,21 +26,27 @@
         android:columnCount="1"
         android:orientation="horizontal">
        <TextView
-        android:text="Mobile phone"
+        android:text="Security mobile phone"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/editMobilePhone" />
+        android:id="@+id/editMobilePhoneLabel" />
         <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/editMobilePhone" />
+        <CheckBox
+            android:text="Automatic Send"
+            android:id="@+id/checkBoxAutomaticSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <Button
             android:text="save settings"
             android:id="@+id/buttonSave"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
            />
+       
     </GridLayout>
    
    
