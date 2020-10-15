@@ -1,4 +1,6 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,8 +19,29 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_main" />
-
-
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="1"
+        android:orientation="horizontal">
+       <TextView
+        android:text="Mobile phone"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/editMobilePhone" />
+        <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/editMobilePhone" />
+        <Button
+            android:text="save settings"
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+           />
+    </GridLayout>
+   
+   
 </android.support.design.widget.CoordinatorLayout>

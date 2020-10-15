@@ -13,21 +13,27 @@ using Android.Widget;
 
 namespace Tamagochi
 {
-    [Activity(Label = "Settings", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
+    [Activity(Label = "Settings", Theme = "@style/AppTheme.NoActionBar")]
     public class Settings : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+           Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.action_settings);
 
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
-
+            Button save= FindViewById<Button>(Resource.Id.buttonSave);
             //FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            //fab.Click += FabOnClick;
+            save.Click += saveSettingsOnClick;
         }
+
+        private void saveSettingsOnClick(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
