@@ -36,7 +36,19 @@ namespace Tamagochi
             var settings = new Settings();
             settings.IsAutomaticSet = isAutmoanticSend.Checked;
             settings.SecurtiyMobilePhone = sMobilePhone.Text;
-            await tVm.AppentSettingsAsync(settings);
+           var isValidated= tVm.ValidateSettings(settings);
+            if(!isValidated)
+            {
+                Toast.MakeText(ApplicationContext, "Wrong phone", ToastLength.Long).Show();
+            }
+            else
+            {
+                await tVm.AppentSettingsAsync(settings);
+                SetContentView(Resource.Layout.activity_main);
+                Intent intent = new Intent(this, typeof(MainActivity));
+                StartActivity(intent);
+            }
+           
 
         }
 

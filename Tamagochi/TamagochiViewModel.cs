@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -49,6 +50,20 @@ namespace Tamagochi
             return currentSettings;
 
 
+        }
+
+        public bool ValidateSettings(Settings settings)
+        {
+            try
+            {
+               
+                return Android.Util.Patterns.Phone.Matcher(settings.SecurtiyMobilePhone).Matches();
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
