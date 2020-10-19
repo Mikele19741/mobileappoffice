@@ -10,9 +10,11 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
+using Android.Telephony;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Plugin.Messaging;
 
 namespace Tamagochi
 {
@@ -93,6 +95,21 @@ namespace Tamagochi
             locationManager.RemoveUpdates(this);
         }
 
+
+        public void SendSmS()
+        {
+            ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.SendSms }, 1);
+            var vm = new TamagochiViewModel();
+            var settings = vm.GetSettings();
+            if (!string.IsNullOrEmpty(settings.SecurtiyMobilePhone) && settings.IsAutomaticSet)
+            {
+                var smsMessenger = CrossMessaging.Current.SmsMessenger;
+                if (smsMessenger.CanSendSmsInBackground)
+                    smsMessenger.SendSmsInBackground(settings.SecurtiyMobilePhone, $"I have a problem {MyPlace}");
+            }
+
+
+        }
         private void GetLocation()
         {
             try
@@ -103,10 +120,12 @@ namespace Tamagochi
                 MyPlace = $" Latitude: {location.Latitude} Longitude: {location.Longitude}";
 
                 TextView x = FindViewById<TextView>(Resource.Id.myPlace);
-             x.Text=MyPlace;
+                x.Text=MyPlace;
+               
             }
-            catch
+            catch(Exception ex)
             {
+                Toast.MakeText(ApplicationContext, ex.Message, ToastLength.Long).Show();
                 MyPlace = string.Empty;
             }
         }
@@ -142,6 +161,8 @@ namespace Tamagochi
             base.OnStart();
             locationManager = GetSystemService(LocationService) as LocationManager;
             GetLocation();
+            SendSmS();
+
         }
 
         protected override void OnPause()
@@ -149,7 +170,21 @@ namespace Tamagochi
             locationManager.RemoveUpdates(this);
             base.OnPause();
         }
-       
+        protected override void OnResume()
+        {
+            base.OnResume();
+            locationManager = GetSystemService(LocationService) as LocationManager;
+          
+        }
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+            locationManager = GetSystemService(LocationService) as LocationManager;
+            GetLocation();
+            SendSmS();
+        }
+        
+
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

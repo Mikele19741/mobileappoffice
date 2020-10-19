@@ -1,5 +1,6 @@
 Plugin.CurrentActivity
 Plugin.Geolocator
+Plugin.Messaging
 Plugin.Permissions
 Xamarin.Android.Arch.Core.Common
 Xamarin.Android.Arch.Core.Runtime

@@ -16,6 +16,8 @@ public class MainActivity
 			"n_onOptionsItemSelected:(Landroid/view/MenuItem;)Z:GetOnOptionsItemSelected_Landroid_view_MenuItem_Handler\n" +
 			"n_onStart:()V:GetOnStartHandler\n" +
 			"n_onPause:()V:GetOnPauseHandler\n" +
+			"n_onResume:()V:GetOnResumeHandler\n" +
+			"n_onRestart:()V:GetOnRestartHandler\n" +
 			"n_onRequestPermissionsResult:(I[Ljava/lang/String;[I)V:GetOnRequestPermissionsResult_IarrayLjava_lang_String_arrayIHandler\n" +
 			"n_onLocationChanged:(Landroid/location/Location;)V:GetOnLocationChanged_Landroid_location_Location_Handler:Android.Locations.ILocationListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n" +
 			"n_onProviderDisabled:(Ljava/lang/String;)V:GetOnProviderDisabled_Ljava_lang_String_Handler:Android.Locations.ILocationListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n" +
@@ -72,6 +74,22 @@ public class MainActivity
 	}
 
 	private native void n_onPause ();
+
+
+	public void onResume ()
+	{
+		n_onResume ();
+	}
+
+	private native void n_onResume ();
+
+
+	public void onRestart ()
+	{
+		n_onRestart ();
+	}
+
+	private native void n_onRestart ();
 
 
 	public void onRequestPermissionsResult (int p0, java.lang.String[] p1, int[] p2)

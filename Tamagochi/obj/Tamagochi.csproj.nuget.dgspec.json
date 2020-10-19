@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[4.5.0.6, )"
             },
+            "Xam.Plugins.Messaging": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
             "Xamarin.Android.Support.Core.Utils": {
               "target": "Package",
               "version": "[28.0.0.3, )"
