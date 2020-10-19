@@ -51,7 +51,19 @@ namespace Tamagochi
            
 
         }
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            int id = item.ItemId;
+            if (id == Resource.Id.activity_main)
+            {
+                SetContentView(Resource.Layout.activity_main);
+                Intent intent = new Intent(this, typeof(MainActivity));
+                StartActivity(intent);
+                return true;
+            }
 
+            return base.OnOptionsItemSelected(item);
+        }
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);

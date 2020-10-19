@@ -8,11 +8,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using Plugin.Geolocator;
 
 namespace Tamagochi
 {
@@ -28,6 +30,7 @@ namespace Tamagochi
                 await writer.WriteLineAsync(jsonData);
             }
         }
+        
         public  Settings GetSettings()
         {
            
