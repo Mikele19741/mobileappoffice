@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Android;
 using Android.App;
 using Android.Content;
@@ -14,7 +16,9 @@ using Android.Telephony;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Plugin.Geolocator.Abstractions;
 using Plugin.Messaging;
+using Xamarin.Essentials;
 
 namespace Tamagochi
 {
@@ -28,7 +32,9 @@ namespace Tamagochi
         const long ONE_MINUTE = 60 * 1000;
         const long FIVE_MINUTES = 5 * ONE_MINUTE;
         String MyPlace { get; set; } = string.Empty;
+        String MyAddress { get; set; } = string.Empty;
         TextView place;
+        TextView address;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -39,12 +45,13 @@ namespace Tamagochi
             SetSupportActionBar(toolbar);
             place = FindViewById<TextView>(Resource.Id.myPlace);
             MyPlace = place.Text;
-            var myAddress = FindViewById<TextView>(Resource.Id.myAddress);
+            address = FindViewById<TextView>(Resource.Id.myAddress);
+            MyAddress = address.Text;
             if (locationManager.AllProviders.Contains(LocationManager.NetworkProvider)
                 && locationManager.IsProviderEnabled(LocationManager.NetworkProvider))
             {
                 locationManager = GetSystemService(LocationService) as LocationManager;
-                GetLocation();
+                GetLocationAsync();
                 RequestLocationUpdates();
             }
             else
@@ -105,29 +112,56 @@ namespace Tamagochi
             {
                 var smsMessenger = CrossMessaging.Current.SmsMessenger;
                 if (smsMessenger.CanSendSmsInBackground)
-                    smsMessenger.SendSmsInBackground(settings.SecurtiyMobilePhone, $"I have a problem {MyPlace}");
+                    smsMessenger.SendSmsInBackground(settings.SecurtiyMobilePhone, $"I have a problem {MyPlace}\r\n {MyAddress}");
             }
 
 
         }
-        private void GetLocation()
+        private async System.Threading.Tasks.Task GetLocationAsync()
         {
             try
             {
                 var criteria = new Criteria { PowerRequirement = Power.Medium };
                 var bestProvider = locationManager.GetBestProvider(criteria, true);
                 var location = locationManager.GetLastKnownLocation(bestProvider);
+                
                 MyPlace = $" Latitude: {location.Latitude} Longitude: {location.Longitude}";
-
+                await GetAdressPlaceAsync(location);
                 TextView x = FindViewById<TextView>(Resource.Id.myPlace);
                 x.Text=MyPlace;
                
             }
-            catch(Exception ex)
+            catch
             {
-                Toast.MakeText(ApplicationContext, ex.Message, ToastLength.Long).Show();
+                Toast.MakeText(ApplicationContext, "Please check you geolocation permission", ToastLength.Long).Show();
                 MyPlace = string.Empty;
             }
+        }
+
+        private async System.Threading.Tasks.Task GetAdressPlaceAsync(Android.Locations.Location location)
+        {
+            var placemarks = await Geocoding.GetPlacemarksAsync(location.Latitude, location.Longitude);
+            var placemark = placemarks?.FirstOrDefault();
+            if (placemark != null)
+            {
+                var geocodeAddress =
+                    $"AdminArea:       {placemark.AdminArea}\n" +
+                    $"CountryCode:     {placemark.CountryCode}\n" +
+                    $"CountryName:     {placemark.CountryName}\n" +
+                    $"FeatureName:     {placemark.FeatureName}\n" +
+                    $"Locality:        {placemark.Locality}\n" +
+                    $"PostalCode:      {placemark.PostalCode}\n" +
+                    $"SubAdminArea:    {placemark.SubAdminArea}\n" +
+                    $"SubLocality:     {placemark.SubLocality}\n" +
+                    $"SubThoroughfare: {placemark.SubThoroughfare}\n" +
+                    $"Thoroughfare:    {placemark.Thoroughfare}\n";
+
+                TextView x = FindViewById<TextView>(Resource.Id.myAddress);
+                x.Text = geocodeAddress;
+                MyAddress = geocodeAddress;
+            }
+
+
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -160,7 +194,7 @@ namespace Tamagochi
         {
             base.OnStart();
             locationManager = GetSystemService(LocationService) as LocationManager;
-            GetLocation();
+            GetLocationAsync();
             SendSmS();
 
         }
@@ -180,7 +214,7 @@ namespace Tamagochi
         {
             base.OnRestart();
             locationManager = GetSystemService(LocationService) as LocationManager;
-            GetLocation();
+            GetLocationAsync();
             SendSmS();
         }
         
@@ -193,9 +227,9 @@ namespace Tamagochi
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        public void OnLocationChanged(Location location)
+        public void OnLocationChanged(Android.Locations.Location location)
         {
-            GetLocation();
+            GetLocationAsync();
         }
 
         public void OnProviderDisabled(string provider)
