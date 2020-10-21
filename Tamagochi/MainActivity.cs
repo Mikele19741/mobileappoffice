@@ -26,6 +26,8 @@ namespace Tamagochi
     public class MainActivity : AppCompatActivity, ILocationListener
     {
         LocationManager locationManager;
+        TamagochiViewModel vm = new TamagochiViewModel();
+        Settings settings=new Settings();
         private bool isRequestingLocationUpdates =false;
         static readonly int RC_LAST_LOCATION_PERMISSION_CHECK = 1000;
         static readonly int RC_LOCATION_UPDATES_PERMISSION_CHECK = 1100;
@@ -45,6 +47,7 @@ namespace Tamagochi
             SetSupportActionBar(toolbar);
             place = FindViewById<TextView>(Resource.Id.myPlace);
             MyPlace = place.Text;
+            settings = vm.GetSettings();
             address = FindViewById<TextView>(Resource.Id.myAddress);
             MyAddress = address.Text;
             if (locationManager.AllProviders.Contains(LocationManager.NetworkProvider)
@@ -54,14 +57,20 @@ namespace Tamagochi
                 GetLocationAsync();
                 RequestLocationUpdates();
             }
-            else
-            {
-                //Snackbar.Make(, myPlace.Va, Snackbar.LengthIndefinite)
-                //        .SetAction(Resource.String.ok, delegate { FinishAndRemoveTask(); })
-                //        .Show();
-            }
+            Button get = FindViewById<Button>(Resource.Id.buttonGet);
+            get.Click += getButtonOnClick;
+
 
         }
+
+        private void getButtonOnClick(object sender, EventArgs e)
+        {
+            locationManager = GetSystemService(LocationService) as LocationManager;
+            GetLocationAsync();
+            RequestLocationUpdates();
+            SendSmS();
+        }
+
         void RequestLocationUpdates()
         {
             if (isRequestingLocationUpdates)
@@ -106,8 +115,7 @@ namespace Tamagochi
         public void SendSmS()
         {
             ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.SendSms }, 1);
-            var vm = new TamagochiViewModel();
-            var settings = vm.GetSettings();
+        
             if (!string.IsNullOrEmpty(settings.SecurtiyMobilePhone) && settings.IsAutomaticSet)
             {
                 var smsMessenger = CrossMessaging.Current.SmsMessenger;
@@ -121,6 +129,7 @@ namespace Tamagochi
         {
             try
             {
+                vm.GetSettings();
                 var criteria = new Criteria { PowerRequirement = Power.Medium };
                 var bestProvider = locationManager.GetBestProvider(criteria, true);
                 var location = locationManager.GetLastKnownLocation(bestProvider);
@@ -128,13 +137,26 @@ namespace Tamagochi
                 MyPlace = $" Latitude: {location.Latitude} Longitude: {location.Longitude}";
                 await GetAdressPlaceAsync(location);
                 TextView x = FindViewById<TextView>(Resource.Id.myPlace);
+                 
                 x.Text=MyPlace;
+                settings.LastPlase = MyPlace;
+                settings.LastAddress = MyAddress;
+                await vm.AppentSettingsAsync(settings);
                
             }
             catch
             {
-                Toast.MakeText(ApplicationContext, "Please check you geolocation permission", ToastLength.Long).Show();
-                MyPlace = string.Empty;
+                Toast.MakeText(ApplicationContext, "Please enable GPS", ToastLength.Long).Show();
+                if (!string.IsNullOrEmpty(settings.LastPlase))
+                {
+                    MyPlace = settings.LastPlase;
+                    MyAddress = settings.LastAddress;
+                }
+                else
+                {
+                    MyPlace = string.Empty;
+                    MyAddress = string.Empty;
+                }
             }
         }
 
@@ -145,16 +167,13 @@ namespace Tamagochi
             if (placemark != null)
             {
                 var geocodeAddress =
-                    $"AdminArea:       {placemark.AdminArea}\n" +
-                    $"CountryCode:     {placemark.CountryCode}\n" +
-                    $"CountryName:     {placemark.CountryName}\n" +
-                    $"FeatureName:     {placemark.FeatureName}\n" +
+                    $"Country Code:     {placemark.CountryCode}\n" +
+                    $"Country Name:     {placemark.CountryName}\n" +
                     $"Locality:        {placemark.Locality}\n" +
-                    $"PostalCode:      {placemark.PostalCode}\n" +
-                    $"SubAdminArea:    {placemark.SubAdminArea}\n" +
-                    $"SubLocality:     {placemark.SubLocality}\n" +
-                    $"SubThoroughfare: {placemark.SubThoroughfare}\n" +
-                    $"Thoroughfare:    {placemark.Thoroughfare}\n";
+                    $"Postal Code:      {placemark.PostalCode}\n" +
+                    $"Sub Admin Area:    {placemark.SubAdminArea}\n" +
+                    $"Sub Locality:     {placemark.SubLocality}\n" +
+                    $"Street:    {placemark.Thoroughfare}\n";
 
                 TextView x = FindViewById<TextView>(Resource.Id.myAddress);
                 x.Text = geocodeAddress;
