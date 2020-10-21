@@ -27,13 +27,16 @@ namespace Tamagochi
            var settings= tVm.GetSettings();
             sMobilePhone = FindViewById<EditText>(Resource.Id.editMobilePhone);
             isAutmoanticSend = FindViewById<CheckBox>(Resource.Id.checkBoxAutomaticSend);
-            sMobilePhone.Text = settings.SecurtiyMobilePhone;
-            isAutmoanticSend.Checked = settings.IsAutomaticSet;
+            if (settings != null)
+            {
+                sMobilePhone.Text = settings.SecurtiyMobilePhone;
+                isAutmoanticSend.Checked = settings.IsAutomaticSet;
+            }
         }
 
         private  async void saveSettingsOnClick(object sender, EventArgs e)
         {
-           var settings = new Settings();
+           var settings = new Settings(); 
             settings.IsAutomaticSet = isAutmoanticSend.Checked;
             settings.SecurtiyMobilePhone = sMobilePhone.Text;
            var isValidated= tVm.ValidateSettings(settings);

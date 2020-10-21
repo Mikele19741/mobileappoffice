@@ -49,13 +49,22 @@ namespace Tamagochi
             settings = vm.GetSettings();
             address = FindViewById<TextView>(Resource.Id.myAddress);
             MyAddress = address.Text;
-            if (locationManager.AllProviders.Contains(LocationManager.NetworkProvider)
-                && locationManager.IsProviderEnabled(LocationManager.NetworkProvider))
+            if(string.IsNullOrEmpty(MyPlace))
             {
-                locationManager = GetSystemService(LocationService) as LocationManager;
-                TimerCallback timeCB = new TimerCallback(GetPosition);
-                Timer time = new Timer(timeCB, null, 0, 120000);
+                GetPosition(null);
             }
+            else
+            {
+                if (locationManager.AllProviders.Contains(LocationManager.NetworkProvider)
+               && locationManager.IsProviderEnabled(LocationManager.NetworkProvider))
+                {
+                    locationManager = GetSystemService(LocationService) as LocationManager;
+                    TimerCallback timeCB = new TimerCallback(GetPosition);
+                    Timer time = new Timer(timeCB, null, 0, 120000);
+                }
+
+            }
+           
             Button get = FindViewById<Button>(Resource.Id.buttonGet);
             get.Click += getButtonOnClick;
 
@@ -63,14 +72,24 @@ namespace Tamagochi
         }
         public void GetPosition(object state)
         {
-            GetLocationAsync();
-            if (!settings.IsAutomaticSet)
+            if (settings == null)
             {
-                settings.IsAutomaticSet = true;
-                SendSmS();
-                settings.IsAutomaticSet = false;
+                SetContentView(Resource.Layout.action_settings);
+                Intent intent = new Intent(this, typeof(SettingsActivity));
+                StartActivity(intent);
+                return;
             }
-            RequestLocationUpdates();
+            else
+            {
+                GetLocationAsync();
+                if (!settings.IsAutomaticSet)
+                {
+                    settings.IsAutomaticSet = true;
+                    SendSmS();
+                    settings.IsAutomaticSet = false;
+                }
+                RequestLocationUpdates();
+            }
 
         }
         private void getButtonOnClick(object sender, EventArgs e)
