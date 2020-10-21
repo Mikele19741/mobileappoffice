@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Android;
 using Android.App;
 using Android.Content;
@@ -30,9 +31,7 @@ namespace Tamagochi
         Settings settings=new Settings();
         private bool isRequestingLocationUpdates =false;
         static readonly int RC_LAST_LOCATION_PERMISSION_CHECK = 1000;
-        static readonly int RC_LOCATION_UPDATES_PERMISSION_CHECK = 1100;
         const long ONE_MINUTE = 60 * 1000;
-        const long FIVE_MINUTES = 5 * ONE_MINUTE;
         String MyPlace { get; set; } = string.Empty;
         String MyAddress { get; set; } = string.Empty;
         TextView place;
@@ -54,21 +53,30 @@ namespace Tamagochi
                 && locationManager.IsProviderEnabled(LocationManager.NetworkProvider))
             {
                 locationManager = GetSystemService(LocationService) as LocationManager;
-                GetLocationAsync();
-                RequestLocationUpdates();
+                TimerCallback timeCB = new TimerCallback(GetPosition);
+                Timer time = new Timer(timeCB, null, 0, 120000);
             }
             Button get = FindViewById<Button>(Resource.Id.buttonGet);
             get.Click += getButtonOnClick;
 
 
         }
+        public void GetPosition(object state)
+        {
+            GetLocationAsync();
+            if (!settings.IsAutomaticSet)
+            {
+                settings.IsAutomaticSet = true;
+                SendSmS();
+                settings.IsAutomaticSet = false;
+            }
+            RequestLocationUpdates();
 
+        }
         private void getButtonOnClick(object sender, EventArgs e)
         {
             locationManager = GetSystemService(LocationService) as LocationManager;
-            GetLocationAsync();
-            RequestLocationUpdates();
-            SendSmS();
+            GetPosition(null);
         }
 
         void RequestLocationUpdates()
@@ -173,9 +181,10 @@ namespace Tamagochi
                     $"Postal Code:      {placemark.PostalCode}\n" +
                     $"Sub Admin Area:    {placemark.SubAdminArea}\n" +
                     $"Sub Locality:     {placemark.SubLocality}\n" +
-                    $"Street:    {placemark.Thoroughfare}\n";
+                    $"Street:    {placemark.Thoroughfare}\n"+
+                    $"Build: {placemark.SubThoroughfare}\n";
 
-                TextView x = FindViewById<TextView>(Resource.Id.myAddress);
+               TextView x = FindViewById<TextView>(Resource.Id.myAddress);
                 x.Text = geocodeAddress;
                 MyAddress = geocodeAddress;
             }
@@ -213,8 +222,7 @@ namespace Tamagochi
         {
             base.OnStart();
             locationManager = GetSystemService(LocationService) as LocationManager;
-            GetLocationAsync();
-            SendSmS();
+            GetPosition(null);
 
         }
 
