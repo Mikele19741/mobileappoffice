@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -16,6 +11,8 @@ namespace Tamagochi
     [Activity(Label = "Settings", Theme = "@style/AppTheme.NoActionBar")]
     public class SettingsActivity : AppCompatActivity
     {
+        EditText sMobilePhone;
+        CheckBox isAutmoanticSend;
         TamagochiViewModel tVm = new TamagochiViewModel();
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -27,13 +24,16 @@ namespace Tamagochi
             SetSupportActionBar(toolbar);
             Button save= FindViewById<Button>(Resource.Id.buttonSave);
             save.Click += saveSettingsOnClick;
+           var settings= tVm.GetSettings();
+            sMobilePhone = FindViewById<EditText>(Resource.Id.editMobilePhone);
+            isAutmoanticSend = FindViewById<CheckBox>(Resource.Id.checkBoxAutomaticSend);
+            sMobilePhone.Text = settings.SecurtiyMobilePhone;
+            isAutmoanticSend.Checked = settings.IsAutomaticSet;
         }
 
         private  async void saveSettingsOnClick(object sender, EventArgs e)
         {
-            var sMobilePhone = FindViewById<EditText>(Resource.Id.editMobilePhone);
-            var isAutmoanticSend = FindViewById<CheckBox>(Resource.Id.checkBoxAutomaticSend);
-            var settings = new Settings();
+           var settings = new Settings();
             settings.IsAutomaticSet = isAutmoanticSend.Checked;
             settings.SecurtiyMobilePhone = sMobilePhone.Text;
            var isValidated= tVm.ValidateSettings(settings);

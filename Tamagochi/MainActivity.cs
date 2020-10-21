@@ -141,11 +141,9 @@ namespace Tamagochi
                 var criteria = new Criteria { PowerRequirement = Power.Medium };
                 var bestProvider = locationManager.GetBestProvider(criteria, true);
                 var location = locationManager.GetLastKnownLocation(bestProvider);
-                
                 MyPlace = $" Latitude: {location.Latitude} Longitude: {location.Longitude}";
                 await GetAdressPlaceAsync(location);
                 TextView x = FindViewById<TextView>(Resource.Id.myPlace);
-                 
                 x.Text=MyPlace;
                 settings.LastPlase = MyPlace;
                 settings.LastAddress = MyAddress;
@@ -208,13 +206,7 @@ namespace Tamagochi
                 StartActivity(intent);
                 return true;
             }
-            if (id == Resource.Id.action_maps)
-            {
-                SetContentView(Resource.Layout.action_maps);
-                Intent intent = new Intent(this, typeof(MapsActivity));
-                StartActivity(intent);
-                return true;
-            }
+           
 
             return base.OnOptionsItemSelected(item);
         }

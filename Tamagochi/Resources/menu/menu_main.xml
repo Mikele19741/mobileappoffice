@@ -11,9 +11,4 @@
      android:orderInCategory="100"
      android:title="Start Page"
      app:showAsAction="never" />
-  <item
-     android:id="@+id/action_maps"
-     android:orderInCategory="100"
-     android:title="Maps"
-     app:showAsAction="never" />
 </menu>

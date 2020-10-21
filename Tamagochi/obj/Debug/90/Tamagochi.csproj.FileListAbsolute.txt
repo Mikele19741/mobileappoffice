@@ -268,7 +268,6 @@ C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\res\layout\action_maps.xml
 C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\assets\Plugin.CurrentActivity.dll
 C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\assets\Plugin.Geolocator.dll
 C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\assets\Plugin.Permissions.dll
-C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\src\crc641ce4a313234a694a\MapsActivity.java
 C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\src\crc64435a5ac349fa9fda\ActivityLifecycleContextListener.java
 C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\src\crc649efb5bdbf2d8cfa5\GeolocationContinuousListener.java
 C:\Private\mobileappoffice\Tamagochi\obj\Debug\90\android\src\crc649efb5bdbf2d8cfa5\GeolocationSingleListener.java

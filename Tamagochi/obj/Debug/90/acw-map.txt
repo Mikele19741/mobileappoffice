@@ -1,9 +1,6 @@
 Tamagochi.MainActivity, Tamagochi;crc641ce4a313234a694a.MainActivity
 Tamagochi.MainActivity;crc641ce4a313234a694a.MainActivity
 tamagochi.MainActivity;crc641ce4a313234a694a.MainActivity
-Tamagochi.MapsActivity, Tamagochi;crc641ce4a313234a694a.MapsActivity
-Tamagochi.MapsActivity;crc641ce4a313234a694a.MapsActivity
-tamagochi.MapsActivity;crc641ce4a313234a694a.MapsActivity
 Tamagochi.SettingsActivity, Tamagochi;crc641ce4a313234a694a.SettingsActivity
 Tamagochi.SettingsActivity;crc641ce4a313234a694a.SettingsActivity
 tamagochi.SettingsActivity;crc641ce4a313234a694a.SettingsActivity
