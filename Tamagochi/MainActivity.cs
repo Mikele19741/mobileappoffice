@@ -51,7 +51,7 @@ namespace Tamagochi
             MyAddress = address.Text;
             if(string.IsNullOrEmpty(MyPlace))
             {
-                GetPosition(null);
+                GetPositionAsync(null);
             }
             else
             {
@@ -59,7 +59,7 @@ namespace Tamagochi
                && locationManager.IsProviderEnabled(LocationManager.NetworkProvider))
                 {
                     locationManager = GetSystemService(LocationService) as LocationManager;
-                    TimerCallback timeCB = new TimerCallback(GetPosition);
+                    TimerCallback timeCB = new TimerCallback(GetPositionAsync);
                     Timer time = new Timer(timeCB, null, 0, 120000);
                 }
 
@@ -70,7 +70,7 @@ namespace Tamagochi
 
 
         }
-        public void GetPosition(object state)
+        public void GetPositionAsync(object state)
         {
             if (settings == null)
             {
@@ -81,7 +81,7 @@ namespace Tamagochi
             }
             else
             {
-                GetLocationAsync();
+                 GetLocationAsync();
                 if (!settings.IsAutomaticSet)
                 {
                     settings.IsAutomaticSet = true;
@@ -95,7 +95,7 @@ namespace Tamagochi
         private void getButtonOnClick(object sender, EventArgs e)
         {
             locationManager = GetSystemService(LocationService) as LocationManager;
-            GetPosition(null);
+            GetPositionAsync(null);
         }
 
         void RequestLocationUpdates()
@@ -233,7 +233,7 @@ namespace Tamagochi
         {
             base.OnStart();
             locationManager = GetSystemService(LocationService) as LocationManager;
-            GetPosition(null);
+            GetPositionAsync(null);
 
         }
 
